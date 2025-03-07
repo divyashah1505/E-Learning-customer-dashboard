@@ -1,0 +1,321 @@
+#Featured{
+    margin-top: 4rem;
+}
+
+.categoryContainer{
+    padding: 5rem 0 5rem;
+}
+
+.categoryContainer .single-blog-inner{
+    width: 100%;
+    height: 100%;
+    min-height: 30rem;
+    max-height: 30rem;
+    max-width: 26rem;
+    border: 2px solid #fea900;
+    border-radius: 10px;
+    margin: 5px;
+    overflow: hidden;
+}
+
+.categoryContainer .single-blog-inner .post-image{
+    position: relative;
+    overflow: hidden;
+}
+
+.categoryContainer .single-blog-inner .post-image img{
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.categoryContainer .single-blog-inner .post-image .heart-icon {
+    position: absolute;
+    top: 10px; 
+    right: 10px; 
+    font-size: 24px; 
+    cursor: pointer; 
+    z-index: 1; 
+    transition: transform 0.3s ease; 
+}
+
+.categoryContainer .single-blog-inner .post-image .heart-icon.filled {
+    color: red; 
+    transform: scale(1.1); 
+}
+
+.categoryContainer .single-blog-inner .post-title h3{
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 36px;
+    text-transform: capitalize;
+    width: 80%; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.categoryContainer .single-blog-inner .post-title h3:hover {
+    width: 100%;
+    height: auto;
+    white-space: wrap;
+    font-size: 1.2rem;
+}
+
+.categoryContainer .single-blog-inner .post-title button {
+    flex-shrink: 0; 
+    width: 20%; 
+    text-align: center;
+    z-index: 1;
+}
+
+.categoryContainer .single-blog-inner .post-content{
+    margin: 8px;
+}
+
+.categoryContainer .single-blog-inner .post-content p{
+    display: -webkit-box;
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16px; 
+}
+
+.categoryContainer .single-blog-inner .post-details{
+    border-top: 2px solid #fea900;
+    padding: 5px 15px 5px 15px;
+}
+
+.categoryContainer .single-blog-inner .post-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+}
+
+
+.categoryContainer .single-blog-inner .rating-box p {
+    margin: 0;
+    color: black;
+    font-weight: bold;
+    line-height: 16px;
+    background: rgba(254, 170,0);
+    border-radius: 5px;
+    padding: 8px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.custom-row {
+    margin-right: -5px;
+    margin-left: -5px;
+}
+
+.margin-adjust {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 0 !important;
+}
+
+.btn.view-btn {
+    color: #faaa00;
+    margin: 0px;
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px 15px;
+    font-weight: 600;
+    border-radius: 10px;
+    text-align: center;
+    width: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.btn.view-btn:hover {
+    background-color: #0056b3;
+}
+
+
+.category-title{
+    margin-left: 7rem;
+}
+
+
+.btn.cat-view-more-button {
+    text-decoration: none;
+    color: #feaa00;
+    padding: 0px 8px;
+    margin-bottom: 10px;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn.cat-view-more-button::after {
+    content: '\2192'; 
+    margin-left: 5px; 
+    font-size: 1.5em;
+}
+
+.btn.cat-view-more-button span {
+    display: inline-block;
+}
+
+.btn.cat-view-more-button:hover {
+    background-color: #feaa00;
+    color: white;
+}
+
+/* .progress-bar-container {
+    width: 100%;
+    height: 5px;
+    background-color: #ccc;
+    margin-top: 20px;
+    position: relative;
+}
+  
+.progress {
+    height: 100%;
+    background-color: #faaa00;
+    transition: width 0.3s ease;
+} */
+  
+
+
+/* .swiper-button-next, .swiper-button-prev {
+    color: #faaa00; 
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #faaa00; 
+    top: 50%; 
+    transform: translateY(-50%); 
+}
+
+.swiper-button-next::after, .swiper-button-prev::after {
+    font-size: 20px;
+    color: #faaa00;
+}
+
+.swiper-button-prev {
+    left: 0px; 
+    margin-left: 10px; 
+}
+
+.swiper-button-next {
+    right: 0px; 
+    margin-left: 10px; 
+}
+
+.mySwiper {
+    padding-right: 50px; 
+    padding-left: 50px; 
+}
+
+
+.swiper-button-next:hover, .swiper-button-prev:hover {
+    background-color: #faaa00;
+    color: white;
+}
+
+.swiper-button-next:hover::after, .swiper-button-prev:hover::after {
+    color: white;
+} */
+
+  
+.modalContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.modalContent {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.modalButton {
+    background-color: #faaa00;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    }
+
+.modalButton:hover {
+    background-color: #faaa00;
+}
+ 
+
+.categoryContainer .slick-prev,
+.categoryContainer .slick-next {
+  color: #fea900; 
+  background-color: white; 
+  border-radius: 50%; 
+  width: 2.5rem; 
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.categoryContainer .slick-prev:before {
+    content: '←';
+}
+.categoryContainer .slick-prev:before,
+.categoryContainer .slick-next::before {
+    font-family: 'slick';
+    font-size: 2.5rem;
+    line-height: 1;
+    opacity: .75;
+    color: orange;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.categoryContainer .slick-prev {
+  left: -2.5rem; 
+}
+
+.categoryContainer .slick-next {
+  right: -2.5rem; 
+}
+
+.categoryContainer .slick-prev:hover,
+.categoryContainer .slick-next:hover {
+  background-color: white; 
+  color: orangered; 
+}
+
+.slick-dots li.slick-active button:before {
+    opacity: .75;
+    color: black;
+    font-size: 0.5rem;
+}

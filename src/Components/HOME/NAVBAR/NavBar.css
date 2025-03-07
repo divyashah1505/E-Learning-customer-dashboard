@@ -1,0 +1,329 @@
+.main-header {
+    box-shadow: 5px 5px 10px rgba(250, 170, 0, 0.4);
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+    top: 0rem;
+    transition: background 0.3s;
+    padding: 10px 0;
+    background-color: white;
+    border-radius: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.main-header.stuck {
+    position: fixed;
+    top: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    width: 100%;
+}
+
+.header-menu,
+.header-menu ul,
+.header-menu ul li,
+.header-menu ul li a,
+.header-menu .menu-button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    list-style: none;
+    line-height: 1;
+    display: block;
+    position: relative;
+}
+
+.header-menu > ul ul {
+    text-align: left;
+    z-index: 99999;
+}
+
+.header-menu > ul > li {
+    display: block;
+    float: left;
+    padding-left: 19px;
+    padding-right: 19px;
+}
+
+.header-menu > ul > li > a {
+    padding: 23px 0 23px;
+    font-size: 16px;
+    color: #36324a;
+    font-weight: 500;
+}
+
+.header-menu ul ul {
+    position: absolute;
+    left: -9999px;
+    opacity: 1;
+    transition: top 0.2s ease, opacity 0.2s ease;
+}
+
+.header-menu > ul > li:hover > ul {
+    left: auto;
+    top: 60px;
+    opacity: 1;
+}
+
+.header-menu > ul > li > ul {
+    top: 30px;
+    background: #081340;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    transition: top 0.2s ease, opacity 0.2s ease;
+    border-radius: 5px;
+}
+
+.header-menu ul ul ul {
+    top: 32px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.header-menu ul li ul a {
+    width: 186px;
+    padding: 8px 20px;
+    font-size: 16px;
+    line-height: 1.25;
+    position: relative;
+    background: #081340;
+    transition: all 0.2s;
+    color: #979caf;
+}
+
+.header-menu ul ul li:hover > a,
+.header-menu ul li:hover > span,
+.header-menu ul ul li > a:hover,
+.header-menu ul ul li.active > a {
+    color: rgba(250, 170, 0);
+}
+
+.header-menu ul ul li:hover > a,
+.header-menu ul li:hover > a {
+    color : rgba(250, 170, 0);
+}
+
+.main-header.sticky .header-menu ul ul li a {
+    background: #081340;
+    color: #979caf;
+}
+
+.logo .sticky-logo {
+    display: none;
+}
+
+.main-header.sticky .logo .default-logo {
+    display: none;
+}
+
+.main-header.sticky .logo .sticky-logo {
+    display: block;
+}
+
+.main-header.sticky {
+    background: #fff;
+    width: 80%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    border-radius: 50px;
+}
+
+.navbar-brand img {
+    height: 80px;
+}
+
+.menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.urgent-call span {
+    margin-right: 15px;
+    display: inline-block;
+    text-transform: capitalize;
+}
+
+.urgent-call a.btn {
+    margin-left: 16px;
+}
+
+.transparent-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+}
+
+.navbar-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.navbarRow{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    height: 3rem;
+    padding: 2rem;
+}
+
+.col-xl-3, .col-lg-3, .col-md-4, .col-6, .col-xl-6, .col-lg-6, .menu-button, .col-lg-3 {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
+
+
+.notification-icon {
+    position: relative;
+    cursor: pointer;
+    font-size: 24px; 
+    color: #333; 
+    margin-right: 20px; 
+}
+
+.notification-count {
+    position: absolute;
+    top: -8px; 
+    right: -8px; 
+    background-color: #ff4500; 
+    color: white; 
+    border-radius: 50%;
+    padding: 0 6px;
+    font-size: 12px;
+    line-height: 20px; 
+    min-width: 20px; 
+    height: 20px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .main-header {
+        padding: 5px 0;
+    }
+    .logo img {
+        height: 50px;
+    }
+    .notification-icon {
+        font-size: 20px;
+    }
+    .notification-count {
+        top: -6px;
+        right: -6px;
+        min-width: 18px;
+        height: 18px;
+        font-size: 10px;
+    }
+}
+
+.main-header.sticky {
+    background-color: #fff; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.text-right{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+
+.notification-dialogue {
+    position: absolute;
+    right: 0;
+    top: 50px;
+    width: 250px;
+    background-color: white;
+    color: #faaa00;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 100;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.notification-item {
+    padding: 10px;
+    border-bottom: 2px solid #faaa00;
+    color: #faaa00;
+    text-align: justify;
+    font-size: 18px;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-icon {
+    position: relative;
+    display: inline-block; 
+    font-size: 25px;
+    color: black;
+}
+
+.notification-icon:hover{
+    color: #faaa00;
+    transition: all 0.3s ease-in-out;
+}
+
+.navbarList.no-hover > ul {
+    display: none !important; 
+}
+
+.navbarList.no-hover > a {
+    cursor: default;
+}
+
+.user-icon {
+    position: relative;
+    cursor: pointer;
+    font-size: 25px; 
+    color: black; 
+    margin-right: 20px;
+}
+
+.user-icon:hover{
+    color: #faaa00;
+    transition: all 0.3s ease-in-out;
+}
+
+.user-dialogue {
+    position: absolute;
+    right: 0;
+    top: 50px;
+    width: 250px;
+    background-color: white;
+    color: #faaa00;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 100;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.user-menu-item {
+    padding: 10px;
+    border-bottom: 2px solid #faaa00;
+    color: #faaa00;
+    text-align: justify;
+    font-size: 18px;
+}
+
+.user-menu-item:last-child {
+    border-bottom: none;
+}
+
+
+.user-greeting {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.user-greeting span {
+    margin-right: 10px; 
+}
+
