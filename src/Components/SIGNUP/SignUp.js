@@ -282,60 +282,62 @@
 
 // export default SignUp;
 
-
-
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./SignUp.css"; // Adjust the path as necessary
-import Logo from "../IMAGES/Logo (Resize).png"; // Adjust the image path as necessary
+import "./SignUp.css";
+import Logo from "../IMAGES/Logo (Resize).png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
-import {BASE_URL} from "../../config/config";
-
+import { BASE_URL } from "../../config/config";
 
 const SignUp = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const [loading, setLoading] = useState(false);
+
   const password = watch("password");
   const confirmPassword = watch("confirm-password");
 
   const onSubmit = async (data) => {
     if (password !== confirmPassword) {
-      toast.error("Passwords do not match", { autoClose: 2000, className: "toast-error" });
+      toast.error("Passwords do not match", { autoClose: 2000 });
       return;
     }
 
+    setLoading(true);
+
     try {
       const response = await axios.post(
-        `${BASE_URL}/register`, // Update this URL as needed
+        `${BASE_URL}/register`,
         {
           full_name: data.full_name,
           email_address: data.email_address,
           phone_number: data.phone_number,
           password: data.password,
-          // Include additional fields as required
         },
         { withCredentials: true }
       );
 
-      // You can adjust the condition based on your backend response
-      if (response.status === 201 || response.data.message) {
-        toast.success("Registration Successful. Redirecting to homepage...", {
+      if (response.status === 201 || response.data.success) {
+        localStorage.setItem("customerName", response.data.customerName);
+        localStorage.setItem("token", response.data.token);
+
+        toast.success("Registration Successful! Redirecting...", {
           autoClose: 2000,
-          className: "toast-success",
         });
-        setTimeout(() => {
-          navigate("/");
-        }, 2000);
+
+        setTimeout(() => navigate("/"), 2000);
       }
     } catch (error) {
       const errorMessage = error.response?.data?.error || "Registration failed";
-      toast.error(errorMessage, { autoClose: 2000, className: "toast-error" });
+      toast.error(errorMessage, { autoClose: 2000 });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -350,74 +352,43 @@ const SignUp = () => {
           
           <div className="form-group">
             <FontAwesomeIcon icon={faUser} className="signUp-icon" />
-            <input
-              {...register("full_name", { required: "Full Name is required" })}
-              placeholder="Full Name"
-              className="theme-input-style"
-              type="text"
-            />
+            <input {...register("full_name", { required: "Full Name is required" })} placeholder="Full Name" className="theme-input-style" type="text" />
             {errors.full_name && <p className="text-danger">{errors.full_name.message}</p>}
           </div>
 
-          {/* Email Field */}
           <div className="form-group">
             <FontAwesomeIcon icon={faEnvelope} className="signUp-icon"/>
-            <input
-              {...register("email_address", { required: "Email is required" })}
-              placeholder="Email"
-              className="theme-input-style"
-              type="email"
-            />
+            <input {...register("email_address", { required: "Email is required" })} placeholder="Email" className="theme-input-style" type="email" />
             {errors.email_address && <p className="text-danger">{errors.email_address.message}</p>}
           </div>
 
-          {/* Phone Number Field */}
           <div className="form-group">
             <FontAwesomeIcon icon={faPhone} className="signUp-icon" />
-            <input
-              {...register("phone_number", { required: "Phone Number is required" })}
-              type="tel"
-              placeholder="Phone Number"
-              className="theme-input-style"
-            />
+            <input {...register("phone_number", { required: "Phone Number is required", pattern: /^\d{10}$/ })} type="tel" placeholder="Phone Number" className="theme-input-style" />
             {errors.phone_number && <p className="text-danger">{errors.phone_number.message}</p>}
           </div>
 
-          {/* Password Field */}
           <div className="form-group">
             <FontAwesomeIcon icon={faLock} className="signUp-icon"/>
-            <input
-              {...register("password", { required: "Password is required" })}
-              type="password"
-              placeholder="Password"
-              className="theme-input-style"
-            />
+            <input {...register("password", { required: "Password is required", minLength: 6 })} type="password" placeholder="Password" className="theme-input-style" />
             {errors.password && <p className="text-danger">{errors.password.message}</p>}
           </div>
 
-          {/* Confirm Password Field */}
           <div className="form-group">
             <FontAwesomeIcon icon={faLock} className="signUp-icon"/>
-            <input
-              {...register("confirm-password", { required: "Confirm Password is required" })}
-              type="password"
-              placeholder="Confirm Password"
-              className="theme-input-style"
-            />
+            <input {...register("confirm-password", { required: "Confirm Password is required" })} type="password" placeholder="Confirm Password" className="theme-input-style" />
             {errors["confirm-password"] && <p className="text-danger">{errors["confirm-password"].message}</p>}
           </div>
 
-          {/* Sign Up Button */}
           <div className="form-group">
-            <button className="signUpBTN" type="submit">
-              Sign Up
+            <button className="signUpBTN" type="submit" disabled={loading}>
+              {loading ? "Registering..." : "Sign Up"}
             </button>
           </div>
+
           <div className="option text-center">
             <label className="text-dark">Already have an Account? &ensp;</label>
-            <Link to="/login">
-              <span>Log In</span>
-            </Link>
+            <Link to="/login"><span>Log In</span></Link>
           </div>
         </form>
       </div>

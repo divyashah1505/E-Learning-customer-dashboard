@@ -1,123 +1,123 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../templateStyles.css"; // Import your CSS file
-import image1 from '../../IMAGES/E-learning-images/food1.webp';
-import image2 from '../../IMAGES/E-learning-images/food4.webp';
-import image3 from '../../IMAGES/E-learning-images/food3.webp';
+// import React, { useState } from "react";
+// import { Link } from "react-router-dom";
+// import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
+// import "../templateStyles.css"; // Import your CSS file
+// import image1 from '../../IMAGES/E-learning-images/food1.webp';
+// import image2 from '../../IMAGES/E-learning-images/food4.webp';
+// import image3 from '../../IMAGES/E-learning-images/food3.webp';
 
-const Trending = () => {
-  const [favorites, setFavorites] = useState([]);
+// const Trending = () => {
+//   const [favorites, setFavorites] = useState([]);
 
-  const handleFavoriteClick = (itemName) => {
-    const updatedFavorites = [...favorites];
-    const index = updatedFavorites.indexOf(itemName);
-    if (index !== -1) {
-      updatedFavorites.splice(index, 1);
-      toast.error(`Recipe "${itemName}" removed from Favorites`, {className : "toast-error"});
-    } else {
-      updatedFavorites.push(itemName);
-      toast.success(`Recipe "${itemName}" added to Favorites` , {className : "toast-success"});
-    }
-    setFavorites(updatedFavorites);
+//   const handleFavoriteClick = (itemName) => {
+//     const updatedFavorites = [...favorites];
+//     const index = updatedFavorites.indexOf(itemName);
+//     if (index !== -1) {
+//       updatedFavorites.splice(index, 1);
+//       toast.error(`Recipe "${itemName}" removed from Favorites`, {className : "toast-error"});
+//     } else {
+//       updatedFavorites.push(itemName);
+//       toast.success(`Recipe "${itemName}" added to Favorites` , {className : "toast-success"});
+//     }
+//     setFavorites(updatedFavorites);
 
-    // Display updated favorites array in the console
-    console.log("Favorites array:", updatedFavorites);
-  };
+//     // Display updated favorites array in the console
+//     console.log("Favorites array:", updatedFavorites);
+//   };
 
-  return (
-    <>
-      <ToastContainer
-        position="top-right"
-        autoClose={1000} // Set the autoClose duration to 1 second
-        hideProgressBar
-        closeButton={false} // Disable the close button
-      />
-      <section className="pt-40 pb-80" id='trending'>
-      <div className="container">
-          <div className="row justify-content-center">
-            <div className="section-title text-center">
-              <h2> Trending(Featured) Video 🔥</h2>
-            </div>
-          </div>
-          <div className="row">
-            {trendingItems.map((item, index) => (
-              <div className="col-lg-4 col-md-4" key={index}>
-                <div className="single-blog-inner">
-                  <div className="post-image">
-                    <Link to="blog-details.html">
-                      <img
-                        src={item.image}
-                        alt=""
-                        className="image-container"
-                      />
-                       <div className="play-button">
-                        <span>&#9654;</span>
-                      </div>
+//   return (
+//     <>
+//       <ToastContainer
+//         position="top-right"
+//         autoClose={1000} // Set the autoClose duration to 1 second
+//         hideProgressBar
+//         closeButton={false} // Disable the close button
+//       />
+//       <section className="pt-40 pb-80" id='trending'>
+//       <div className="container">
+//           <div className="row justify-content-center">
+//             <div className="section-title text-center">
+//               <h2> Trending(Featured) Video 🔥</h2>
+//             </div>
+//           </div>
+//           <div className="row">
+//             {trendingItems.map((item, index) => (
+//               <div className="col-lg-4 col-md-4" key={index}>
+//                 <div className="single-blog-inner">
+//                   <div className="post-image">
+//                     <Link to="blog-details.html">
+//                       <img
+//                         src={item.image}
+//                         alt=""
+//                         className="image-container"
+//                       />
+//                        <div className="play-button">
+//                         <span>&#9654;</span>
+//                       </div>
                       
-                      {/* <div className="rating-box">
-                        <p>{item.rating} &#9733;</p>
-                      </div> */}
-                    </Link>
-                  </div>
-                  <div className="post-content">
-                    <div className="post-details">
-                      <hr className="horizon" />
+//                       {/* <div className="rating-box">
+//                         <p>{item.rating} &#9733;</p>
+//                       </div> */}
+//                     </Link>
+//                   </div>
+//                   <div className="post-content">
+//                     <div className="post-details">
+//                       <hr className="horizon" />
                       
-                      <div className="post-title">
-                        <h3>
-                          <a href="blog-details.html">{item.title}</a>
-                        </h3>
-                      </div>
+//                       <div className="post-title">
+//                         <h3>
+//                           <a href="blog-details.html">{item.title}</a>
+//                         </h3>
+//                       </div>
 
-                      <div className="post-info d-flex">
-                        <span>{item.duration}</span>
-                        <span
-                          className={`favorite-heart ${
-                            favorites.includes(item.title) ? 'favorited' : ''
-                          }`}
-                          onClick={() => handleFavoriteClick(item.title)}
-                        >
-                          &#10084;
-                        </span>
-                      </div>
+//                       <div className="post-info d-flex">
+//                         <span>{item.duration}</span>
+//                         <span
+//                           className={`favorite-heart ${
+//                             favorites.includes(item.title) ? 'favorited' : ''
+//                           }`}
+//                           onClick={() => handleFavoriteClick(item.title)}
+//                         >
+//                           &#10084;
+//                         </span>
+//                       </div>
                     
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </>
-  );
-};
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+//       </section>
+//     </>
+//   );
+// };
 
-const trendingItems = [
-  {
-    image: image1,
-    title: "Smoked Salmon Pizza",
-    duration: "1 Hour 30 Minutes",
-    rating: "4.5",
-  },
-  {
-    image: image2,
-    title: "Chorizo Tacos",
-    duration: "1 Hour 30 Minutes",
-    rating: "4.8",
-  },
-  {
-    image: image3,
-    title: "Barbacoa",
-    duration: "1 Hour 30 Minutes",
-    rating: "4.2",
-  },
-];
+// const trendingItems = [
+//   {
+//     image: image1,
+//     title: "Smoked Salmon Pizza",
+//     duration: "1 Hour 30 Minutes",
+//     rating: "4.5",
+//   },
+//   {
+//     image: image2,
+//     title: "Chorizo Tacos",
+//     duration: "1 Hour 30 Minutes",
+//     rating: "4.8",
+//   },
+//   {
+//     image: image3,
+//     title: "Barbacoa",
+//     duration: "1 Hour 30 Minutes",
+//     rating: "4.2",
+//   },
+// ];
 
-export default Trending;
+// export default Trending;
 
 
 
@@ -465,112 +465,116 @@ export default Trending;
 
 
 
-// import React, { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
-// import { BASE_URL } from "../../../config/config";
-// import "../PopularCategories/Category.css";
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { BASE_URL } from "../../../config/config";
+import "../PopularCategories/Category.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
-// const Trending = () => {
-//   const [recipes, setRecipes] = useState([]);
-//   const [heartFilled, setHeartFilled] = useState({});
-//   useEffect(() => {
-//     const fetchRecipes = async () => {
-//       try {
-//         const response = await fetch(`${BASE_URL}/recipes/featured`, {
-//           headers: { "ngrok-skip-browser-warning": "true" }
-//         });
+const Trending = () => {
+  const [recipes, setRecipes] = useState([]);
+  const [heartFilled, setHeartFilled] = useState({});
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/recipes/featured`, {
+          headers: { "ngrok-skip-browser-warning": "true" }
+        });
   
-//         if (!response.ok) throw new Error("Failed to fetch Featured Recipes");
+        if (!response.ok) throw new Error("Failed to fetch Featured Recipes");
   
-//         const contentType = response.headers.get("content-type");
-//         if (!contentType || !contentType.includes("application/json")) {
-//           throw new Error("Expected JSON response");
-//         }
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("Expected JSON response");
+        }
   
-//         const data = await response.json();
-//         console.log("Fetched Featured Recipes:", data); // Debugging output
+        const { success, data } = await response.json();
   
-//         if (!Array.isArray(data) || data.length === 0) {
-//           console.warn("No featured recipes found!");
-//         }
+        if (!success || !Array.isArray(data) || data.length === 0) {
+          console.warn("No featured recipes found!");
+          return;
+        }
   
-//         setRecipes(data.sort((a, b) => b.Recipe_id - a.Recipe_id).slice(0, 3));
-//       } catch (error) {
-//         console.error("Error fetching Featured Recipes:", error);
-//       }
-//     };
+        console.log("API Response Data:", data);
+        
+        setRecipes(data.sort((a, b) => b.Recipe_id - a.Recipe_id).slice(0, 3));
   
-//     fetchRecipes();
-//   }, []);
+      } catch (error) {
+        console.error("Error fetching Featured Recipes:", error);
+      }
+    };
+  
+    fetchRecipes();
+  }, []);
+  
   
   
 
-//   const toggleHeart = async (recipeId) => {
-//     const isFilled = heartFilled[recipeId];
-//     const customerId = localStorage.getItem('customerId');
-//     const url = `${BASE_URL}/favorites/${isFilled ? `${recipeId}/remove` : "add"}`;
-//     const method = isFilled ? "DELETE" : "POST";
-//     const body = isFilled ? null : JSON.stringify({ user_id: customerId, recipe_id: recipeId });
+  const toggleHeart = async (recipeId) => {
+    const isFilled = heartFilled[recipeId];
+    const customerId = localStorage.getItem('customerId');
+    const url = `${BASE_URL}/favorites/${isFilled ? `${recipeId}/remove` : "add"}`;
+    const method = isFilled ? "DELETE" : "POST";
+    const body = isFilled ? null : JSON.stringify({ user_id: customerId, recipe_id: recipeId });
     
-//     try {
-//       const response = await fetch(url, {
-//         method,
-//         headers: { 'Content-Type': 'application/json' },
-//         body
-//       });
-//       if (!response.ok) {
-//         throw new Error(`Failed to ${isFilled ? "remove" : "add"} from favorites`);
-//       }
-//       console.log(`${isFilled ? "Removed from" : "Added to"} favorites successfully`);
-//       setHeartFilled((prev) => ({ ...prev, [recipeId]: !isFilled }));
-//     } catch (error) {
-//       console.error(`Error ${isFilled ? "removing from" : "adding to"} favorites:`, error);
-//     }
-//   };
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to ${isFilled ? "remove" : "add"} from favorites`);
+      }
+      console.log(`${isFilled ? "Removed from" : "Added to"} favorites successfully`);
+      setHeartFilled((prev) => ({ ...prev, [recipeId]: !isFilled }));
+    } catch (error) {
+      console.error(`Error ${isFilled ? "removing from" : "adding to"} favorites:`, error);
+    }
+  };
 
-//   return (
-//     <section className="categoryContainer" id="trending">
-//       <div className="container">
-//         <div className="row justify-content-center">
-//           <div className="section-title text-center">
-//             <h2>Featured (Trending) Recipes</h2>
-//             <Link to="/featured-videos" className="view-more-button">
-//               View More
-//             </Link>
-//           </div>
-//         </div>
-//         <div className="row custom-row">
-//           {recipes.map((recipe) => (
-//             <div className="col-lg-4 col-md-4 margin-adjust" key={recipe.Recipe_id}>
-//               <div className="single-blog-inner">
-//                 <div className="post-image">
-//                   <img src={recipe.Recipe_Thumbnail} alt={recipe.Recipe_Title} className="image-container" />
-//                   <FontAwesomeIcon 
-//                     icon={faHeart} 
-//                     className={`heart-icon ${heartFilled[recipe.Recipe_id] ? 'filled' : ''}`} 
-//                     onClick={() => toggleHeart(recipe.Recipe_id)} 
-//                   />
-//                 </div>
-//                 <div className="post-content">
-//                   <div className="post-details">
-//                     <div className="post-title">
-//                       <h3>{recipe.Recipe_Title}</h3>
-//                       <Link to={`/recipes/subcategory/${recipe.Sub_Category_id}/${recipe.Recipe_id}`} className="btn cat-view-more-button">
-//                         View 
-//                       </Link>
-//                     </div>
-//                   </div>
-//                   <p>{recipe.Recipe_Description}</p>
-//                 </div>
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
+  return (
+    <section className="categoryContainer" id="trending">
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="section-title text-center">
+            <h2>Featured (Trending) Recipes</h2>
+            <Link to="/featured-videos" className="view-more-button">
+              View More
+            </Link>
+          </div>
+        </div>
+        <div className="row custom-row">
+          {recipes.map((recipe) => (
+            <div className="col-lg-4 col-md-4 margin-adjust" key={recipe.Recipe_id}>
+              <div className="single-blog-inner">
+                <div className="post-image">
+                  <img src={recipe.Recipe_Thumbnail} alt={recipe.Recipe_Title} className="image-container" />
+                  <FontAwesomeIcon 
+                    icon={faHeart} 
+                    className={`heart-icon ${heartFilled[recipe.Recipe_id] ? 'filled' : ''}`} 
+                    onClick={() => toggleHeart(recipe.Recipe_id)} 
+                  />
+                </div>
+                <div className="post-content">
+                  <div className="post-details">
+                    <div className="post-title">
+                      <h3>{recipe.Recipe_Title}</h3>
+                      <Link to={`/recipes/subcategory/${recipe.Sub_Category_id}/${recipe.Recipe_id}`} className="btn cat-view-more-button">
+                        View 
+                      </Link>
+                    </div>
+                  </div>
+                  <p>{recipe.Recipe_Description}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
-// export default Trending;
+export default Trending;
