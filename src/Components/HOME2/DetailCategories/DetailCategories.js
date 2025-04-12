@@ -10,18 +10,18 @@ import similarBlogs from '../../IMAGES/similar-blogs.png'
 export default function DetailCategories() {
 
     const [comments, setComments] = useState([
-        {
-          name: "Dev Gajjar",
-          date: "February 29,2024 - 4:04 pm",
-          message: "Easy to learn and Cook!!",
-          avatar: commentAuthor,
-        },
-        {
-          name: "Call me Taeni",
-          date: "January 22,2024 - 7:35 pm",
-          message: "Please upload a video of cooking Khavsa..",
-          avatar: commentAuthor2,
-        },
+        // {
+        //   name: "Dev Gajjar",
+        //   date: "February 29,2024 - 4:04 pm",
+        //   message: "Easy to learn and Cook!!",
+        //   avatar: commentAuthor,
+        // },
+        // {
+        //   name: "Call me Taeni",
+        //   date: "January 22,2024 - 7:35 pm",
+        //   message: "Please upload a video of cooking Khavsa..",
+        //   avatar: commentAuthor2,
+        // },
       ]);
       const [formData, setFormData] = useState({
         name: "",
@@ -154,7 +154,7 @@ export default function DetailCategories() {
                         </div> {/* <!-- End of post tag and share --> */}                         
                         
                         {/* <!-- post comments --> */}
-                        <div className="DC-post-comment">
+                        {/* <div className="DC-post-comment">
                             <h3>{comments.length} Comments</h3>
                             <ul className="post-comments p-0 m-0 list-unstyled">
                                 {comments.map((comment, index) => (
@@ -173,7 +173,7 @@ export default function DetailCategories() {
                                 </li>
                                 ))}
                             </ul>
-                        </div>
+                        </div> */}
                         {/* <!--/.End of post comments --> */}
                         
                         {/* <!-- contact form --> */}

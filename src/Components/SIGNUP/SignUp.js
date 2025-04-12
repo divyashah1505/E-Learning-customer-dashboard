@@ -323,16 +323,14 @@ const SignUp = () => {
         { withCredentials: true }
       );
 
-      if (response.status === 201 || response.data.success) {
-        localStorage.setItem("customerName", response.data.customerName);
+      if (response.status === 201) {
+        localStorage.setItem("customerName", response.data.user.full_name);
         localStorage.setItem("token", response.data.token);
-
-        toast.success("Registration Successful! Redirecting...", {
-          autoClose: 2000,
-        });
-
+      
+        toast.success("Registration Successful! Welcome email sent.", { autoClose: 2000 });
         setTimeout(() => navigate("/"), 2000);
       }
+      
     } catch (error) {
       const errorMessage = error.response?.data?.error || "Registration failed";
       toast.error(errorMessage, { autoClose: 2000 });
@@ -377,7 +375,7 @@ const SignUp = () => {
           <div className="form-group">
             <FontAwesomeIcon icon={faLock} className="signUp-icon"/>
             <input {...register("confirm-password", { required: "Confirm Password is required" })} type="password" placeholder="Confirm Password" className="theme-input-style" />
-            {errors["confirm-password"] && <p className="text-danger">{errors["confirm-password"].message}</p>}
+            {errors["confirm-pass4word"] && <p className="text-danger">{errors["confirm-password"].message}</p>}
           </div>
 
           <div className="form-group">

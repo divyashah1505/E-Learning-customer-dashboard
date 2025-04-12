@@ -156,7 +156,7 @@
 
 
 
-// import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 // import axios from 'axios'; // Ensure axios is installed or use the native fetch API
 // import './PriceSection.css';
 // import { Link, useNavigate } from 'react-router-dom';
@@ -317,11 +317,11 @@
 // };
 
 
-// export default PriceSection;
-import React, { useState, useEffect } from 'react';
+// export default PriceSection;import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+// import { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { QRCodeCanvas } from 'qrcode.react'; // Using QRCodeCanvas for QR code generation
+import { QRCodeCanvas } from 'qrcode.react';
 import { Link } from 'react-router-dom';
 import { BASE_URL } from '../../../config/config';
 import './PriceSection.css';
@@ -329,9 +329,9 @@ import './PriceSection.css';
 const PriceSection = () => {
   const [activeTab, setActiveTab] = useState('plans');
   const [combos, setCombos] = useState([]);
-  const [showPaymentModal, setShowPaymentModal] = useState(false); // For Payment Modal
-  const [selectedPlan, setSelectedPlan] = useState(null); // To store the selected plan details
-  const [showQRCode, setShowQRCode] = useState(false); // Control QR code display
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [showQRCode, setShowQRCode] = useState(false);
 
   useEffect(() => {
     const fetchCombos = async () => {
@@ -341,7 +341,7 @@ const PriceSection = () => {
             "ngrok-skip-browser-warning": "true"
           }
         });
-  
+
         if (Array.isArray(response.data)) {
           setCombos(response.data);
         } else {
@@ -353,26 +353,23 @@ const PriceSection = () => {
         setCombos([]);
       }
     };
-  
+
     fetchCombos();
   }, []);
-  
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
-  // Open Payment Modal when "Get Started" is clicked
   const handleGetStarted = (plan) => {
     setSelectedPlan(plan);
-    setShowQRCode(true); // Show QR Code for UPI payment
+    setShowQRCode(true);
     setShowPaymentModal(true);
   };
 
-  // Close the payment modal
   const handleCloseModal = () => {
     setShowPaymentModal(false);
-    setShowQRCode(false); // Reset QR code display
+    setShowQRCode(false);
   };
 
   return (
@@ -470,7 +467,6 @@ const PriceSection = () => {
           <h5>{selectedPlan?.name}</h5>
           <p>Price: Rs {selectedPlan?.price}</p>
 
-          {/* Payment Method Form */}
           <div className="payment-method">
             <form>
               <div className="mb-3">
@@ -493,17 +489,16 @@ const PriceSection = () => {
             </form>
           </div>
 
-          {/* QR Code for UPI */}
           {showQRCode && (
-            <div className="qr-code-section">
+            <div className="qr-code-section text-center mt-4">
               <h5>Or Pay via UPI</h5>
               <QRCodeCanvas
-                value={`upi://pay?pa=example@upi&pn=${selectedPlan?.name}&am=${selectedPlan?.price}&cu=INR&tn=Subscription`}
+                value={`upi://pay?pa=8000192167@axl&pn=Tapesh&am=${selectedPlan?.price}&cu=INR&tn=Payment for ${selectedPlan?.name} Plan`}
                 size={200}
                 level="H"
                 includeMargin={true}
               />
-              <p>Scan the QR code to complete your payment</p>
+              <p className="mt-2">Scan the QR code to complete your payment</p>
             </div>
           )}
         </Modal.Body>
@@ -512,7 +507,6 @@ const PriceSection = () => {
   );
 };
 
-// Pricing Plan Component
 const PricingPlan = ({ name, price, features, onGetStarted }) => {
   return (
     <div className="col-md-4">
@@ -524,9 +518,7 @@ const PricingPlan = ({ name, price, features, onGetStarted }) => {
           <span>Rs {price}/-</span>
           <ul className="price-list">
             {features.map((feature, index) => (
-              <li key={index}>
-                {feature}
-              </li>
+              <li key={index}>{feature}</li>
             ))}
           </ul>
         </div>
