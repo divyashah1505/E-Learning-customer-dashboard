@@ -156,7 +156,6 @@
 
 
 
-import React, { useState, useEffect } from 'react';
 // import axios from 'axios'; // Ensure axios is installed or use the native fetch API
 // import './PriceSection.css';
 // import { Link, useNavigate } from 'react-router-dom';
@@ -319,7 +318,7 @@ import React, { useState, useEffect } from 'react';
 
 // export default PriceSection;import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-// import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { QRCodeCanvas } from 'qrcode.react';
 import { Link } from 'react-router-dom';
@@ -328,6 +327,7 @@ import './PriceSection.css';
 
 const PriceSection = () => {
   const [activeTab, setActiveTab] = useState('plans');
+  const [plans, setPlans] = useState([]);
   const [combos, setCombos] = useState([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
@@ -337,29 +337,32 @@ const PriceSection = () => {
     const fetchCombos = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/activecombos`, {
-          headers: {
-            "ngrok-skip-browser-warning": "true"
-          }
+          headers: { "ngrok-skip-browser-warning": "true" }
         });
-
-        if (Array.isArray(response.data)) {
-          setCombos(response.data);
-        } else {
-          console.error('Expected an array for combos but got:', typeof response.data);
-          setCombos([]);
-        }
+        setCombos(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error('Failed to fetch combos', error);
         setCombos([]);
       }
     };
 
+    const fetchPlans = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/active-plans`, {
+          headers: { "ngrok-skip-browser-warning": "true" }
+        });
+        setPlans(Array.isArray(response.data) ? response.data : []);
+      } catch (error) {
+        console.error('Failed to fetch plans', error);
+        setPlans([]);
+      }
+    };
+
     fetchCombos();
+    fetchPlans();
   }, []);
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
+  const handleTabChange = (tab) => setActiveTab(tab);
 
   const handleGetStarted = (plan) => {
     setSelectedPlan(plan);
@@ -386,16 +389,10 @@ const PriceSection = () => {
               <div className="price--nav-inner">
                 <nav>
                   <div className="nav info-tabs">
-                    <Link
-                      className={`price--nav-item ${activeTab === 'plans' ? 'active' : ''}`}
-                      onClick={() => handleTabChange('plans')}
-                    >
+                    <Link className={`price--nav-item ${activeTab === 'plans' ? 'active' : ''}`} onClick={() => handleTabChange('plans')}>
                       Plans
                     </Link>
-                    <Link
-                      className={`price--nav-item ${activeTab === 'combo' ? 'active' : ''}`}
-                      onClick={() => handleTabChange('combo')}
-                    >
+                    <Link className={`price--nav-item ${activeTab === 'combo' ? 'active' : ''}`} onClick={() => handleTabChange('combo')}>
                       Combos
                     </Link>
                   </div>
@@ -404,48 +401,48 @@ const PriceSection = () => {
             </div>
 
             <div className="tab-content price-content">
-              <div
-                className={`tab-pane fade ${activeTab === 'plans' ? 'show active' : ''}`}
-                id="plans"
-                role="tabpanel"
-              >
-                <div className="price-row">
-                  <PricingPlan
-                    name="Silver"
-                    price="499"
-                    features={['1 Month Validity', '10 Free Recipes']}
-                    onGetStarted={() => handleGetStarted({ name: 'Silver', price: 499 })}
-                  />
-                  <PricingPlan
-                    name="Gold"
-                    price="599"
-                    features={['6 Month Validity', '100 Free Recipes']}
-                    active={true}
-                    onGetStarted={() => handleGetStarted({ name: 'Gold', price: 599 })}
-                  />
-                  <PricingPlan
-                    name="Diamond"
-                    price="699"
-                    features={['1 Year Validity', 'Unlimited Free Recipes']}
-                    onGetStarted={() => handleGetStarted({ name: 'Diamond', price: 699 })}
-                  />
-                </div>
-              </div>
+            <div className={`tab-pane fade ${activeTab === 'plans' ? 'show active' : ''}`} id="plans" role="tabpanel">
+  <div className="price-row row">
+    {plans.length > 0 ? (
+      plans.map((plan, index) => (
+        <PricingPlan
+          key={plan.planid || index}
+          name={plan.planname}
+          price={plan.planprice}
+          features={plan.description ? plan.description.split(',') : []}
+          onGetStarted={() =>
+            handleGetStarted({
+              name: plan.planname,
+              price: plan.planprice,
+              description: plan.description
+            })
+          }
+        />
+      ))
+    ) : (
+      <p>No plans available at the moment.</p>
+    )}
+  </div>
+</div>
 
-              <div
-                className={`tab-pane fade ${activeTab === 'combo' ? 'show active' : ''}`}
-                id="combo"
-                role="tabpanel"
-              >
-                <div className="price-row">
+
+
+              <div className={`tab-pane fade ${activeTab === 'combo' ? 'show active' : ''}`} id="combo" role="tabpanel">
+                <div className="price-row row">
                   {combos.length > 0 ? (
                     combos.map((combo, index) => (
                       <PricingPlan
                         key={combo.id || index}
                         name={combo.comboname}
                         price={combo.comboprice}
-                        features={[combo.combodescription]}
-                        onGetStarted={() => handleGetStarted({ name: combo.comboname, price: combo.comboprice })}
+                        features={combo.combodescription ? combo.combodescription.split(',') : []}
+                        onGetStarted={() =>
+                          handleGetStarted({
+                            name: combo.comboname,
+                            price: combo.comboprice,
+                            description: combo.combodescription
+                          })
+                        }
                       />
                     ))
                   ) : (
@@ -466,6 +463,13 @@ const PriceSection = () => {
         <Modal.Body>
           <h5>{selectedPlan?.name}</h5>
           <p>Price: Rs {selectedPlan?.price}</p>
+          {selectedPlan?.description && (
+            <ul>
+              {selectedPlan.description.split(',').map((item, idx) => (
+                <li key={idx}>{item.trim()}</li>
+              ))}
+            </ul>
+          )}
 
           <div className="payment-method">
             <form>
@@ -493,7 +497,7 @@ const PriceSection = () => {
             <div className="qr-code-section text-center mt-4">
               <h5>Or Pay via UPI</h5>
               <QRCodeCanvas
-                value={`upi://pay?pa=8000192167@axl&pn=Tapesh&am=${selectedPlan?.price}&cu=INR&tn=Payment for ${selectedPlan?.name} Plan`}
+                value={`upi://pay?pa=8000192167@axl&pn=Tapesh&am=${selectedPlan?.price}&cu=INR&tn=Payment for ${selectedPlan?.name}`}
                 size={200}
                 level="H"
                 includeMargin={true}
@@ -518,7 +522,7 @@ const PricingPlan = ({ name, price, features, onGetStarted }) => {
           <span>Rs {price}/-</span>
           <ul className="price-list">
             {features.map((feature, index) => (
-              <li key={index}>{feature}</li>
+              <li key={index}>{feature.trim()}</li>
             ))}
           </ul>
         </div>
