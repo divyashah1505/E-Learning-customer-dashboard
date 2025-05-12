@@ -123,8 +123,8 @@ import LogIn from './Components/LOGIN/LogIn';
 import SignUp from './Components/SIGNUP/SignUp';
 import Home from './Components/HOME/Home';
 import Category from './Components/HOME/PopularCategories/Category';
-import SubCategory from './Components/HOME/PopularCategories/Subcategory'; 
-import Recipes from './Components/HOME/REPICES/RecipeDetails'; 
+import SubCategory from './Components/HOME/PopularCategories/Subcategory';
+import Recipes from './Components/HOME/REPICES/RecipeDetails';
 import Favorites from './Components/HOME/NavbarButtons/FAVORITES/Favorites';
 import PlanDetails from './Components/HOME/PRICE/plansdetail';
 import loadingGif from './Components/IMAGES/giphy4.gif';
@@ -139,7 +139,6 @@ const App = () => {
   const [error, setError] = useState(null);
   const [featuredRecipes, setFeaturedRecipes] = useState([]);
 
-  // Fetch data on load
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -148,21 +147,20 @@ const App = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          mode: 'cors',  // Ensure CORS is handled properly
+          mode: 'cors',
         });
 
         if (response.ok) {
-          const data = await response.json();
-          console.log('Fetched Data:', data);  // For debugging
-          setFeaturedRecipes(data);  // Store the fetched data
-          setIsLoading(false);
+          const result = await response.json();
+          console.log('Fetched Data:', result);
+          setFeaturedRecipes(result.data); // Accessing `data` inside result
         } else {
           setError('Failed to fetch data');
-          setIsLoading(false);
         }
       } catch (err) {
         console.error('Error fetching data:', err);
         setError('Error fetching data');
+      } finally {
         setIsLoading(false);
       }
     };
@@ -199,23 +197,8 @@ const App = () => {
             <Route path="/plan-details" element={<PlanDetails />} />
           </Routes>
 
-          {/* Optional: Display featured recipes on the homepage */}
-          <div>
-            <h2>Featured Recipes</h2>
-            {featuredRecipes.length === 0 ? (
-              <p>No featured recipes found</p>
-            ) : (
-              <ul>
-                {featuredRecipes.map((recipe) => (
-                  <li key={recipe.Recipe_id}>
-                    <h3>{recipe.Recipe_Title}</h3>
-                    <p>{recipe.Recipe_Description}</p>
-                    <img src={recipe.Recipe_Thumbnail} alt={recipe.Recipe_Title} style={{ width: '100px' }} />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          {/* Featured Recipes Section */}
+         
         </div>
       )}
     </Router>

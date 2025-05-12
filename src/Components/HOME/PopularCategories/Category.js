@@ -345,8 +345,6 @@
 // };
 // export default Category;
 
-
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
@@ -388,7 +386,8 @@ const Category = () => {
       try {
         const response = await fetch(`${BASE_URL}/viewcategories`, {
           headers: {
-            "ngrok-skip-browser-warning": "true" // If using Ngrok
+            "ngrok-skip-browser-warning": "true",
+            "User-Agent": "custom-client" // optional fallback
           }
         });
 
@@ -397,15 +396,17 @@ const Category = () => {
         }
 
         const data = await response.json();
+
         if (Array.isArray(data)) {
           setCategories(data);
+          setError(null); // Clear any previous error
         } else {
           console.error("Expected an array but got:", data);
-          setError("Unexpected data format.");
+          setError("Unexpected data format received from server.");
         }
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-        setError(`Failed to fetch categories: ${error.message}`);
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+        setError(`Failed to fetch categories: ${err.message}`);
       }
     };
 
@@ -424,7 +425,7 @@ const Category = () => {
         {error ? (
           <div className="row justify-content-center">
             <div className="col-12 text-center">
-              <p>{error}</p>
+              <p className="text-danger">{error}</p>
             </div>
           </div>
         ) : (

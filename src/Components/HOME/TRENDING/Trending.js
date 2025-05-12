@@ -334,7 +334,7 @@
 // export default Trending;
 // import React, { useState, useEffect } from "react";
 // import { Link } from "react-router-dom";
-// import { BASE_URL } from "../../../config/config";
+import { BASE_URL } from "../../../config/config";
 // import "../PopularCategories/Category.css";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faHeart } from '@fortawesome/free-solid-svg-icons';
@@ -463,56 +463,60 @@
 
 
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { BASE_URL } from "../../../config/config";
-import "../PopularCategories/Category.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+
+// Replace this with your actual ngrok or backend base URL
 
 const Trending = () => {
   const [recipes, setRecipes] = useState([]);
-  const [heartFilled, setHeartFilled] = useState(new Set()); // Using Set for optimized state management
+  const [heartFilled, setHeartFilled] = useState({});
   const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
-useEffect(() => {
-  const fetchRecipes = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/recipes/featured`, {
-        headers: { "Content-Type": "application/json" }
-      });
+  const [error, setError] = useState("");
 
-      if (!response.ok) throw new Error("Failed to fetch Featured Recipes");
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/recipes/featured`, {
+          headers: { "ngrok-skip-browser-warning": "true" }
+        });
 
-      const responseData = await response.json();
-      console.log("Full API Response:", responseData); // Log full response to inspect the data
+        if (!response.ok) throw new Error("Failed to fetch Featured Recipes");
 
-      const { success, data } = responseData;
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("Expected JSON response");
+        }
 
-      // If no data or no featured recipes, set error message
-      if (!success || !Array.isArray(data) || data.length === 0) {
-        console.warn("No featured recipes found!");
-        setErrorMsg("Currently, there are no featured recipes available.");
-        return;
+        const { success, data } = await response.json();
+
+        if (!success || !Array.isArray(data) || data.length === 0) {
+          // console.warn("No featured recipes found!");
+          setRecipes([]); // Set empty array if no recipes are found
+          return;
+        }
+
+        console.log("✅ API Response Data:", data);
+        const sortedRecipes = data
+          .sort((a, b) => b.Recipe_id - a.Recipe_id)
+          .slice(0, 3); // show latest 3
+
+        setRecipes(sortedRecipes);
+      } catch (error) {
+        console.error("Error fetching Featured Recipes:", error);
+        setError("Something went wrong while fetching recipes.");
+      } finally {
+        setLoading(false);
       }
+    };
 
-      // Sort recipes by Recipe_id and slice to get the top 3
-      setRecipes(data.sort((a, b) => b.Recipe_id - a.Recipe_id).slice(0, 3));
-    } catch (error) {
-      console.error("Error fetching Featured Recipes:", error);
-      setErrorMsg("Something went wrong. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchRecipes();
-}, []);
-
-
+    fetchRecipes();
+  }, []);
 
   const toggleHeart = async (recipeId) => {
-    const isFilled = heartFilled.has(recipeId); // Check if the recipe is already favorited
+    const isFilled = heartFilled[recipeId];
     const customerId = localStorage.getItem('customerId');
     const url = `${BASE_URL}/favorites/${isFilled ? `${recipeId}/remove` : "add"}`;
     const method = isFilled ? "DELETE" : "POST";
@@ -524,18 +528,11 @@ useEffect(() => {
         headers: { 'Content-Type': 'application/json' },
         body
       });
-      if (!response.ok) throw new Error(`Failed to ${isFilled ? "remove" : "add"} from favorites`);
-
-      // Optimistically update the heart state
-      setHeartFilled(prev => {
-        const updatedHeartFilled = new Set(prev);
-        if (isFilled) {
-          updatedHeartFilled.delete(recipeId); // Remove from Set if already filled
-        } else {
-          updatedHeartFilled.add(recipeId); // Add to Set if not filled
-        }
-        return updatedHeartFilled;
-      });
+      if (!response.ok) {
+        throw new Error(`Failed to ${isFilled ? "remove" : "add"} from favorites`);
+      }
+      console.log(`${isFilled ? "Removed from" : "Added to"} favorites successfully`);
+      setHeartFilled((prev) => ({ ...prev, [recipeId]: !isFilled }));
     } catch (error) {
       console.error(`Error ${isFilled ? "removing from" : "adding to"} favorites:`, error);
     }
@@ -553,46 +550,39 @@ useEffect(() => {
           </div>
         </div>
 
-        {loading ? (
-          <div className="text-center mt-4">Loading featured recipes...</div>
-        ) : errorMsg ? (
-          <div className="text-center text-danger mt-4">{errorMsg}</div>
-        ) : (
-          <div className="row custom-row">
-            {recipes.map((recipe) => (
-              <div className="col-lg-4 col-md-4 margin-adjust" key={recipe.Recipe_id}>
-                <div className="single-blog-inner">
-                  <div className="post-image">
-                    <img
-                      src={recipe.Recipe_Thumbnail || "/images/default-recipe.jpg"}
-                      alt={recipe.Recipe_Title}
-                      className="image-container"
-                    />
-                    <FontAwesomeIcon
-                      icon={faHeart}
-                      className={`heart-icon ${heartFilled.has(recipe.Recipe_id) ? 'filled' : ''}`}
-                      onClick={() => toggleHeart(recipe.Recipe_id)}
-                    />
-                  </div>
-                  <div className="post-content">
-                    <div className="post-details">
-                      <div className="post-title">
-                        <h3>{recipe.Recipe_Title}</h3>
-                        <Link
-                          to={`/recipes/subcategory/${recipe.Sub_Category_id}/${recipe.Recipe_id}`}
-                          className="btn cat-view-more-button"
-                        >
-                          View
-                        </Link>
-                      </div>
+        {loading && <p className="text-center">Loading...</p>}
+        {error && <p className="text-center text-danger">{error}</p>}
+        {!loading && !error && recipes.length === 0 && (
+          <p className="text-center">No featured recipes available right now.</p>
+        )}
+
+        <div className="row custom-row">
+          {recipes.map((recipe) => (
+            <div className="col-lg-4 col-md-4 margin-adjust" key={recipe.Recipe_id}>
+              <div className="single-blog-inner">
+                <div className="post-image">
+                  <img src={recipe.Recipe_Thumbnail || recipe.Recipe_image} alt={recipe.Recipe_Title || recipe.Recipe_name} className="image-container" />
+                  <FontAwesomeIcon 
+                    icon={faHeart} 
+                    className={`heart-icon ${heartFilled[recipe.Recipe_id] ? 'filled' : ''}`} 
+                    onClick={() => toggleHeart(recipe.Recipe_id)} 
+                  />
+                </div>
+                <div className="post-content">
+                  <div className="post-details">
+                    <div className="post-title">
+                      <h3>{recipe.Recipe_Title || recipe.Recipe_name}</h3>
+                      <Link to={`/recipes/subcategory/${recipe.Sub_Category_id}/${recipe.Recipe_id}`} className="btn cat-view-more-button">
+                        View 
+                      </Link>
                     </div>
-                    <p>{recipe.Recipe_Description}</p>
                   </div>
+                  <p>{recipe.Recipe_Description || "No description provided."}</p>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
