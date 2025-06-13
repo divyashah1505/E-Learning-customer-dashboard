@@ -334,7 +334,6 @@
 // export default Trending;
 // import React, { useState, useEffect } from "react";
 // import { Link } from "react-router-dom";
-import { BASE_URL } from "../../../config/config";
 // import "../PopularCategories/Category.css";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faHeart } from '@fortawesome/free-solid-svg-icons';
@@ -465,6 +464,8 @@ import { BASE_URL } from "../../../config/config";
 
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { BASE_URL } from "../../../config/config";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
