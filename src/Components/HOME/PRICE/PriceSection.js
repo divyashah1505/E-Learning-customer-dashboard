@@ -324,6 +324,10 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { Link } from 'react-router-dom';
 import { BASE_URL } from '../../../config/config';
 import './PriceSection.css';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+
+const stripePromise = loadStripe('pk_test_51P142NSD4IihR2313TAprmD6DyuCOYTDgP9jkrtNzYYHOaeXKu1nBNnhkqvge9dCfdYXlslfMVrwdJktnaLT3XZv0057eks7Wx');
 
 const PriceSection = () => {
   const [activeTab, setActiveTab] = useState('plans');
@@ -336,9 +340,7 @@ const PriceSection = () => {
   useEffect(() => {
     const fetchCombos = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/activecombos`, {
-          headers: { "ngrok-skip-browser-warning": "true" }
-        });
+        const response = await axios.get(`${BASE_URL}/activecombos`);
         setCombos(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error('Failed to fetch combos', error);
@@ -348,9 +350,7 @@ const PriceSection = () => {
 
     const fetchPlans = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/active-plans`, {
-          headers: { "ngrok-skip-browser-warning": "true" }
-        });
+        const response = await axios.get(`${BASE_URL}/active-plans`);
         setPlans(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error('Failed to fetch plans', error);
@@ -375,139 +375,143 @@ const PriceSection = () => {
     setShowQRCode(false);
   };
 
+  const handleStripeCheckout = async () => {
+    try {
+      const res = await axios.post(`${BASE_URL}/create-checkout-session`, {
+        name: selectedPlan.name,
+        price: selectedPlan.price,
+        description: selectedPlan.description,
+      });
+
+      const stripe = await stripePromise;
+      await stripe.redirectToCheckout({ sessionId: res.data.id });
+    } catch (err) {
+      console.error('Stripe Checkout Error:', err);
+      alert('Payment initiation failed. Try again.');
+    }
+  };
+
   return (
-    <section className="pt-40 pb-80" id="pricing">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="section-title text-center">
-            <h2>Plans & Combos</h2>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-12">
-            <div className="price-nav-wrap">
-              <div className="price--nav-inner">
-                <nav>
-                  <div className="nav info-tabs">
-                    <Link className={`price--nav-item ${activeTab === 'plans' ? 'active' : ''}`} onClick={() => handleTabChange('plans')}>
-                      Plans
-                    </Link>
-                    <Link className={`price--nav-item ${activeTab === 'combo' ? 'active' : ''}`} onClick={() => handleTabChange('combo')}>
-                      Combos
-                    </Link>
-                  </div>
-                </nav>
-              </div>
+    <Elements stripe={stripePromise}>
+      <section className="pt-40 pb-80" id="pricing">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="section-title text-center">
+              <h2>Plans & Combos</h2>
             </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <div className="price-nav-wrap">
+                <div className="price--nav-inner">
+                  <nav>
+                    <div className="nav info-tabs">
+                      <Link className={`price--nav-item ${activeTab === 'plans' ? 'active' : ''}`} onClick={() => handleTabChange('plans')}>Plans</Link>
+                      <Link className={`price--nav-item ${activeTab === 'combo' ? 'active' : ''}`} onClick={() => handleTabChange('combo')}>Combos</Link>
+                    </div>
+                  </nav>
+                </div>
+              </div>
 
-            <div className="tab-content price-content">
-            <div className={`tab-pane fade ${activeTab === 'plans' ? 'show active' : ''}`} id="plans" role="tabpanel">
-  <div className="price-row row">
-    {plans.length > 0 ? (
-      plans.map((plan, index) => (
-        <PricingPlan
-          key={plan.planid || index}
-          name={plan.planname}
-          price={plan.planprice}
-          features={plan.description ? plan.description.split(',') : []}
-          onGetStarted={() =>
-            handleGetStarted({
-              name: plan.planname,
-              price: plan.planprice,
-              description: plan.description
-            })
-          }
-        />
-      ))
-    ) : (
-      <p>No plans available at the moment.</p>
-    )}
-  </div>
-</div>
+              <div className="tab-content price-content">
+                <div className={`tab-pane fade ${activeTab === 'plans' ? 'show active' : ''}`} id="plans">
+                  <div className="price-row row">
+                    {plans.length > 0 ? (
+                      plans.map((plan, index) => (
+                        <PricingPlan
+                          key={plan.planid || index}
+                          name={plan.planname}
+                          price={plan.planprice}
+                          features={plan.description ? plan.description.split(',') : []}
+                          onGetStarted={() =>
+                            handleGetStarted({
+                              name: plan.planname,
+                              price: plan.planprice,
+                              description: plan.description,
+                            })
+                          }
+                        />
+                      ))
+                    ) : (
+                      <p>No plans available at the moment.</p>
+                    )}
+                  </div>
+                </div>
 
-
-
-              <div className={`tab-pane fade ${activeTab === 'combo' ? 'show active' : ''}`} id="combo" role="tabpanel">
-                <div className="price-row row">
-                  {combos.length > 0 ? (
-                    combos.map((combo, index) => (
-                      <PricingPlan
-                        key={combo.id || index}
-                        name={combo.comboname}
-                        price={combo.comboprice}
-                        features={combo.combodescription ? combo.combodescription.split(',') : []}
-                        onGetStarted={() =>
-                          handleGetStarted({
-                            name: combo.comboname,
-                            price: combo.comboprice,
-                            description: combo.combodescription
-                          })
-                        }
-                      />
-                    ))
-                  ) : (
-                    <p>No combos available at the moment.</p>
-                  )}
+                <div className={`tab-pane fade ${activeTab === 'combo' ? 'show active' : ''}`} id="combo">
+                  <div className="price-row row">
+                    {combos.length > 0 ? (
+                      combos.map((combo, index) => (
+                        <div className="col-md-4 mb-4" key={combo.comboid || index}>
+                          <div className="combo-card">
+                            <div className="combo-img-wrapper">
+                              <img src={combo.combotthumbnail} alt={combo.comboname} className="combo-img" />
+                              <div className="combo-price-tag">₹{combo.comboprice}</div>
+                            </div>
+                            <div className="combo-card-body text-center">
+                              <h5 className="combo-title">{combo.comboname}</h5>
+                              <p className="combo-description">{combo.combodescription}</p>
+                              <button
+                                className="btn combo-btn"
+                                onClick={() =>
+                                  handleGetStarted({
+                                    name: combo.comboname,
+                                    price: combo.comboprice,
+                                    description: combo.combodescription,
+                                  })
+                                }
+                              >
+                                Buy Now
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <p>No combos available at the moment.</p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Payment Modal */}
-      <Modal show={showPaymentModal} onHide={handleCloseModal} dialogClassName="custom-modal-width">
-        <Modal.Header closeButton>
-          <Modal.Title>Complete Your Payment</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <h5>{selectedPlan?.name}</h5>
-          <p>Price: Rs {selectedPlan?.price}</p>
-          {selectedPlan?.description && (
-            <ul>
-              {selectedPlan.description.split(',').map((item, idx) => (
-                <li key={idx}>{item.trim()}</li>
-              ))}
-            </ul>
-          )}
-
-          <div className="payment-method">
-            <form>
-              <div className="mb-3">
-                <label className="form-label">Card Number</label>
-                <input type="text" className="form-control" placeholder="1234 5678 9012 3456" />
+        {/* Payment Modal */}
+        <Modal show={showPaymentModal} onHide={handleCloseModal} dialogClassName="custom-modal-width">
+          <Modal.Header closeButton>
+            <Modal.Title>Complete Your Payment</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="payment-summary">
+              <h4 className="text-center mb-3">{selectedPlan?.name}</h4>
+              <p className="text-center text-muted">
+                You're purchasing <strong>{selectedPlan?.name}</strong> for <strong>₹{selectedPlan?.price}</strong>
+              </p>
+              <hr />
+              <div className="d-flex flex-column flex-md-row gap-4">
+                <div className="card-section flex-fill text-center">
+                  <h5 className="mb-3">Pay with Stripe</h5>
+                  <Button variant="primary" className="w-100" onClick={handleStripeCheckout}>
+                    Pay via Stripe
+                  </Button>
+                </div>
+                <div className="upi-section flex-fill text-center">
+                  <h5 className="mb-3">Pay via UPI</h5>
+                  <QRCodeCanvas
+                    value={`upi://pay?pa=8000192167@axl&pn=Tapesh&am=${selectedPlan?.price}&cu=INR&tn=Payment for ${selectedPlan?.name}`}
+                    size={200}
+                    level="H"
+                    includeMargin={true}
+                  />
+                  <p className="text-muted mt-2 small">Scan this QR code using any UPI app</p>
+                </div>
               </div>
-              <div className="mb-3">
-                <label className="form-label">Expiry Date</label>
-                <input type="text" className="form-control" placeholder="MM/YY" />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">CVV</label>
-                <input type="password" className="form-control" placeholder="CVV" />
-              </div>
-              <div className="mb-3">
-                <Button variant="primary" onClick={handleCloseModal}>
-                  Pay Now
-                </Button>
-              </div>
-            </form>
-          </div>
-
-          {showQRCode && (
-            <div className="qr-code-section text-center mt-4">
-              <h5>Or Pay via UPI</h5>
-              <QRCodeCanvas
-                value={`upi://pay?pa=8000192167@axl&pn=Tapesh&am=${selectedPlan?.price}&cu=INR&tn=Payment for ${selectedPlan?.name}`}
-                size={200}
-                level="H"
-                includeMargin={true}
-              />
-              <p className="mt-2">Scan the QR code to complete your payment</p>
             </div>
-          )}
-        </Modal.Body>
-      </Modal>
-    </section>
+          </Modal.Body>
+        </Modal>
+      </section>
+    </Elements>
   );
 };
 
@@ -519,7 +523,7 @@ const PricingPlan = ({ name, price, features, onGetStarted }) => {
           <h4>{name}</h4>
         </div>
         <div className="combo-section-bottom">
-          <span>Rs {price}/-</span>
+          <span>₹ {price}</span>
           <ul className="price-list">
             {features.map((feature, index) => (
               <li key={index}>{feature.trim()}</li>
@@ -527,7 +531,9 @@ const PricingPlan = ({ name, price, features, onGetStarted }) => {
           </ul>
         </div>
         <div className="get-started-button">
-          <button className="btn" onClick={onGetStarted}>Get Started</button>
+          <button className="btn" onClick={onGetStarted}>
+            Get Started
+          </button>
         </div>
       </div>
     </div>

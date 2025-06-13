@@ -12,7 +12,7 @@ const Blog = () => {
       <section className="pt-40 pb-80" id='blog'>
         <div className="container">
           <div className="blog-section-title text-center">
-            <h2>Blog Posts</h2> 
+            <h2>Blog </h2> 
             <span>
               <Link to="/" className="view-more-button">
                 <span> View More </span>

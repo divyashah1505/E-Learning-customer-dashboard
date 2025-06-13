@@ -41,6 +41,130 @@ justify-content: center;
 color: #36324a;
 margin-bottom: 0px;
 }
+.combo-card {
+  transition: all 0.3s ease-in-out;
+  border-radius: 20px;
+  background: #fff;
+}
+
+.combo-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.combo-image-wrapper {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.combo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.combo-image-wrapper:hover .combo-image {
+  transform: scale(1.05);
+}
+
+.combo-price-tag {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #ffc107;
+  color: #fff;
+  font-weight: bold;
+  padding: 8px 14px;
+  border-radius: 30px;
+  font-size: 14px;
+}
+
+.combo-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #f9a825, #ff9800);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+}
+/* Combo card styling */
+.combo-card {
+  border: 2px solid #ffc107; /* yellow border */
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  transition: transform 0.3s ease;
+  margin: 10px 0;
+}
+
+/* Remove shadow */
+.combo-card:hover {
+  transform: scale(1.02);
+}
+
+/* Image section */
+.combo-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.combo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Price tag in corner */
+.combo-price-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ffc107;
+  color: #fff;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+/* Card body */
+.combo-card-body {
+  padding: 20px;
+}
+
+.combo-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2c2c2c;
+}
+
+.combo-description {
+  color: #6c757d;
+  font-size: 0.95rem;
+  margin: 10px 0 20px;
+}
+
+/* Button */
+.combo-btn {
+  background-color: #ffc107;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 24px;
+  color: #fff;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.combo-btn:hover {
+  background-color: #ffa000;
+}
 
 .single-price-top span {
 font-size: 60px;
@@ -239,4 +363,30 @@ opacity: 1;
   .close-popup-button:hover {
     background-color: #ff0000;
   }
-  
+  .stripe-style-form input {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 10px 12px;
+  font-size: 16px;
+}
+
+.stripe-style-form label {
+  font-weight: 500;
+  color: #333;
+}
+
+.card-section, .upi-section {
+  background: #fafafa;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.payment-summary h5 {
+  font-weight: 600;
+  color: #222;
+}
+
+.payment-summary hr {
+  border-top: 1px solid #e0e0e0;
+}

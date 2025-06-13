@@ -81,7 +81,6 @@ const Banner = () => {
 
                             <h1>CrazeeCook is your Online Chef Friend</h1>
                             <p>Make everyday cooking easy and enjoyable with the Kitchen Stories app. Build your confidence in the kitchen with our step-by-step recipe guides, save time and collect your favorite recipes in personal cookbooks, and join a passionate community of millions of hobby chefs from around the world. Our award winning app is simple to use and has a wide range of over 10,000 recipes that will appeal to beginners and more experienced home cooks alike. Download our free app and create delicious meals that will impress everyone at home.</p>
-                            <Link to="/" className="btn">Download App</Link>
                             <Link to="/" className="btn">Discover More</Link>
                         </div>
                         {/*banner text */}
