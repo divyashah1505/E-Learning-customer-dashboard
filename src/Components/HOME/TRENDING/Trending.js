@@ -481,7 +481,10 @@ const Trending = () => {
     const fetchRecipes = async () => {
       try {
         const response = await fetch(`${BASE_URL}/recipes/featured`, {
-          headers: { "ngrok-skip-browser-warning": "true" }
+          headers: { "ngrok-skip-browser-warning": "true" },
+            credentials: "include" // add this line for cookie-based auth
+
+          
         });
 
         if (!response.ok) throw new Error("Failed to fetch Featured Recipes");
